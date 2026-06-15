@@ -1,0 +1,85 @@
+{
+  "pages": [
+    {
+      "path": "pages/merchant/login",
+      "style": {
+        "navigationBarTitleText": "商家登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/merchant/publish",
+      "style": {
+        "navigationBarTitleText": "发布爆料"
+      }
+    },
+    {
+      "path": "pages/merchant/manage",
+      "style": {
+        "navigationBarTitleText": "料单管理"
+      }
+    },
+    {
+      "path": "pages/merchant/edit",
+      "style": {
+        "navigationBarTitleText": "编辑内容"
+      }
+    },
+    {
+      "path": "pages/merchant/orders",
+      "style": {
+        "navigationBarTitleText": "订单数据"
+      }
+    },
+    {
+      "path": "pages/client/home",
+      "style": {
+        "navigationBarTitleText": "商家主页",
+        "navigationBarBackgroundColor": "#E53935",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/client/detail",
+      "style": {
+        "navigationBarTitleText": "内容详情"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "爆料",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#E53935",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/merchant/manage",
+        "text": "料单管理",
+        "iconPath": "static/tab-manage.png",
+        "selectedIconPath": "static/tab-manage-active.png"
+      },
+      {
+        "pagePath": "pages/merchant/orders",
+        "text": "订单数据",
+        "iconPath": "static/tab-orders.png",
+        "selectedIconPath": "static/tab-orders-active.png"
+      }
+    ]
+  },
+  "condition": {
+    "current": 0,
+    "list": [
+      {
+        "name": "客户端-扫码进入",
+        "path": "pages/client/home",
+        "query": "merchantId=xxx"
+      }
+    ]
+  }
+}
