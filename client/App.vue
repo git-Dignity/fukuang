@@ -12,7 +12,7 @@ onLaunch(() => {
 });
 </script>
 
-<style lang="scss">
+<style>
 /* 全局样式 */
 page {
   background-color: #F5F5F5;

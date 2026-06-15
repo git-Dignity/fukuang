@@ -76,7 +76,7 @@ fukuang/
 - 端口：3306
 - 数据库名：zz
 - 用户名：abcd
-- 密码：pfELWYmPKX5T5x4S
+- 密码：abc1234
 
 ---
 
@@ -88,7 +88,7 @@ fukuang/
 
 ```bash
 mysql -h 39.108.235.72 -P 3306 -u abcd -p zz < sql/init.sql
-# 密码：pfELWYmPKX5T5x4S
+# 密码：abc1234
 ```
 
 建表成功后，自动创建 `merchants`、`posts`、`orders` 三张表。
