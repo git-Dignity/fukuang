@@ -158,7 +158,7 @@ function uploadImage() {
         uni.hideLoading();
         if (data.code === 0) {
           // 服务器返回的相对路径，拼接完整URL
-          const baseUrl = 'http://localhost:3333';
+          const baseUrl = 'http://39.108.235.72:3333';
           form.image_url = baseUrl + data.data.url;
         } else {
           uni.showToast({ title: data.message, icon: 'none' });

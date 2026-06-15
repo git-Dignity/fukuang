@@ -286,7 +286,7 @@ function getBaseUrl() {
   return '';
   // #endif
   // #ifndef H5
-  return 'http://localhost:3333';
+  return 'http://39.108.235.72:3333';
   // #endif
 }
 

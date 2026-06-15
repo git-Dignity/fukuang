@@ -1,5 +1,5 @@
-// 基础请求地址（开发环境）
-const BASE_URL = 'http://localhost:3333';
+// 基础请求地址
+const BASE_URL = 'http://39.108.235.72:3333';
 
 // 请求封装
 function request({ url, method = 'GET', data = {}, header = {} }) {

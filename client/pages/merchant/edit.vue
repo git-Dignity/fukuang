@@ -141,7 +141,7 @@ function uploadImage() {
       api.uploadImage(res.tempFilePaths[0]).then(data => {
         uni.hideLoading();
         if (data.code === 0) {
-          const baseUrl = 'http://localhost:3333';
+          const baseUrl = 'http://39.108.235.72:3333';
           form.image_url = baseUrl + data.data.url;
         }
       }).catch(() => {
