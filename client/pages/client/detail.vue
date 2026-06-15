@@ -169,217 +169,67 @@ function handlePay() {
 }
 </script>
 
-<style lang="scss" scoped>
-.detail-page {
-  min-height: 100vh;
-  background: #F5F5F5;
-}
+<style scoped>
+.detail-page { min-height: 100vh; background: #F5F5F5; }
+.loading-wrap { text-align: center; padding-top: 200rpx; color: #999; }
 
-.loading-wrap {
-  text-align: center;
-  padding-top: 200rpx;
-  color: #999;
-}
+.detail-header { background: #FFFFFF; padding: 32rpx 24rpx; }
+.detail-header .detail-title { font-size: 40rpx; font-weight: bold; color: #333; line-height: 1.4; }
 
-.detail-header {
-  background: #FFFFFF;
-  padding: 32rpx 24rpx;
+.detail-header .detail-tags { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 20rpx; }
+.detail-header .detail-tags .tag { font-size: 22rpx; padding: 4rpx 16rpx; border-radius: 4rpx; }
+.detail-header .detail-tags .tag.red { background: #FFEBEE; color: #E53935; }
+.detail-header .detail-tags .tag.gray { background: #F5F5F5; color: #666; }
+.detail-header .detail-tags .tag.orange { background: #FFF3E0; color: #E65100; }
+.detail-header .detail-tags .tag.green { background: #E8F5E9; color: #2E7D32; }
 
-  .detail-title {
-    font-size: 40rpx;
-    font-weight: bold;
-    color: #333;
-    line-height: 1.4;
-  }
+.detail-header .detail-summary { display: block; font-size: 28rpx; color: #666; margin-top: 20rpx; line-height: 1.6; }
 
-  .detail-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12rpx;
-    margin-top: 20rpx;
+.detail-image { width: 100%; display: block; }
+.content-area { padding: 24rpx; }
 
-    .tag {
-      font-size: 22rpx;
-      padding: 4rpx 16rpx;
-      border-radius: 4rpx;
-
-      &.red {
-        background: #FFEBEE;
-        color: #E53935;
-      }
-      &.gray {
-        background: #F5F5F5;
-        color: #666;
-      }
-      &.orange {
-        background: #FFF3E0;
-        color: #E65100;
-      }
-      &.green {
-        background: #E8F5E9;
-        color: #2E7D32;
-      }
-    }
-  }
-
-  .detail-summary {
-    display: block;
-    font-size: 28rpx;
-    color: #666;
-    margin-top: 20rpx;
-    line-height: 1.6;
-  }
-}
-
-.detail-image {
-  width: 100%;
-  display: block;
-}
-
-.content-area {
-  padding: 24rpx;
-}
-
-.full-content {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 32rpx 24rpx;
-
-  .content-text {
-    font-size: 30rpx;
-    color: #333;
-    line-height: 1.8;
-    white-space: pre-wrap;
-  }
-}
+.full-content { background: #FFFFFF; border-radius: 16rpx; padding: 32rpx 24rpx; }
+.full-content .content-text { font-size: 30rpx; color: #333; line-height: 1.8; white-space: pre-wrap; }
 
 .locked-content {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  overflow: hidden;
-  position: relative;
-  min-height: 400rpx;
-
-  .lock-mask {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80rpx 40rpx;
-
-    .lock-icon {
-      font-size: 80rpx;
-      margin-bottom: 24rpx;
-    }
-
-    .lock-text {
-      font-size: 28rpx;
-      color: #666;
-    }
-
-    .lock-price {
-      font-size: 52rpx;
-      font-weight: bold;
-      color: #E53935;
-      margin: 20rpx 0;
-    }
-
-    .unlock-btn {
-      width: 100%;
-      height: 88rpx;
-      background: #E53935;
-      color: #FFFFFF;
-      border-radius: 12rpx;
-      font-size: 32rpx;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 24rpx;
-
-      &:active {
-        opacity: 0.85;
-      }
-    }
-  }
+  background: #FFFFFF; border-radius: 16rpx; overflow: hidden;
+  position: relative; min-height: 400rpx;
 }
-
-.detail-footer {
-  text-align: center;
-  padding: 24rpx;
-  font-size: 24rpx;
-  color: #999;
+.locked-content .lock-mask {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 80rpx 40rpx;
 }
+.locked-content .lock-mask .lock-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.locked-content .lock-mask .lock-text { font-size: 28rpx; color: #666; }
+.locked-content .lock-mask .lock-price { font-size: 52rpx; font-weight: bold; color: #E53935; margin: 20rpx 0; }
+.locked-content .lock-mask .unlock-btn {
+  width: 100%; height: 88rpx; background: #E53935; color: #FFFFFF;
+  border-radius: 12rpx; font-size: 32rpx; font-weight: bold;
+  display: flex; align-items: center; justify-content: center; margin-top: 24rpx;
+}
+.locked-content .lock-mask .unlock-btn:active { opacity: 0.85; }
 
-/* 支付弹窗 */
+.detail-footer { text-align: center; padding: 24rpx; font-size: 24rpx; color: #999; }
+
 .pay-modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5); display: flex;
+  align-items: center; justify-content: center; z-index: 999;
 }
-
 .pay-modal {
-  background: #FFFFFF;
-  border-radius: 20rpx;
-  padding: 48rpx 40rpx;
-  width: 560rpx;
-  text-align: center;
-
-  .pay-title {
-    font-size: 32rpx;
-    color: #333;
-    font-weight: 500;
-  }
-
-  .pay-amount {
-    display: block;
-    font-size: 56rpx;
-    font-weight: bold;
-    color: #E53935;
-    margin: 24rpx 0 12rpx;
-  }
-
-  .pay-subtitle {
-    font-size: 24rpx;
-    color: #999;
-  }
-
-  .pay-confirm-btn {
-    width: 100%;
-    height: 88rpx;
-    background: #E53935;
-    color: #FFFFFF;
-    border-radius: 12rpx;
-    font-size: 32rpx;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 32rpx;
-
-    &:active {
-      opacity: 0.85;
-    }
-  }
-
-  .pay-cancel {
-    margin-top: 20rpx;
-    font-size: 28rpx;
-    color: #999;
-    padding: 12rpx;
-  }
+  background: #FFFFFF; border-radius: 20rpx; padding: 48rpx 40rpx;
+  width: 560rpx; text-align: center;
 }
-
-.empty-state {
-  text-align: center;
-  padding-top: 200rpx;
-  color: #999;
+.pay-modal .pay-title { font-size: 32rpx; color: #333; font-weight: 500; }
+.pay-modal .pay-amount { display: block; font-size: 56rpx; font-weight: bold; color: #E53935; margin: 24rpx 0 12rpx; }
+.pay-modal .pay-subtitle { font-size: 24rpx; color: #999; }
+.pay-modal .pay-confirm-btn {
+  width: 100%; height: 88rpx; background: #E53935; color: #FFFFFF;
+  border-radius: 12rpx; font-size: 32rpx; font-weight: bold;
+  display: flex; align-items: center; justify-content: center; margin-top: 32rpx;
 }
+.pay-modal .pay-confirm-btn:active { opacity: 0.85; }
+.pay-modal .pay-cancel { margin-top: 20rpx; font-size: 28rpx; color: #999; padding: 12rpx; }
+
+.empty-state { text-align: center; padding-top: 200rpx; color: #999; }
 </style>

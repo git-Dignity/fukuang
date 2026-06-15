@@ -216,194 +216,61 @@ function handleSubmit() {
 }
 </script>
 
-<style lang="scss" scoped>
-.publish-page {
-  min-height: 100vh;
-  background: #F5F5F5;
-  padding-bottom: 140rpx;
+<style scoped>
+.publish-page { min-height: 100vh; background: #F5F5F5; padding-bottom: 140rpx; }
+
+.tab-bar { display: flex; background: #FFFFFF; padding: 0 40rpx; border-bottom: 1rpx solid #F0F0F0; }
+.tab-bar .tab-item { padding: 30rpx 32rpx; font-size: 30rpx; color: #666666; position: relative; }
+.tab-bar .tab-item.active { color: #E53935; font-weight: bold; }
+.tab-bar .tab-item.active::after {
+  content: ''; position: absolute; bottom: 0; left: 32rpx; right: 32rpx;
+  height: 4rpx; background: #E53935; border-radius: 2rpx;
 }
 
-.tab-bar {
-  display: flex;
-  background: #FFFFFF;
-  padding: 0 40rpx;
-  border-bottom: 1rpx solid #F0F0F0;
+.form-wrap { padding: 24rpx; }
 
-  .tab-item {
-    padding: 30rpx 32rpx;
-    font-size: 30rpx;
-    color: #666666;
-    position: relative;
+.form-section { background: #FFFFFF; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.form-section.row { display: flex; align-items: center; justify-content: space-between; }
 
-    &.active {
-      color: #E53935;
-      font-weight: bold;
-
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 32rpx;
-        right: 32rpx;
-        height: 4rpx;
-        background: #E53935;
-        border-radius: 2rpx;
-      }
-    }
-  }
-}
-
-.form-wrap {
-  padding: 24rpx;
-}
-
-.form-section {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-
-  &.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.section-label {
-  font-size: 28rpx;
-  color: #333333;
-  font-weight: 500;
-  margin-bottom: 16rpx;
-}
-
-.required {
-  color: #E53935;
-}
-
-.optional {
-  color: #999999;
-  font-size: 24rpx;
-  font-weight: normal;
-}
+.section-label { font-size: 28rpx; color: #333333; font-weight: 500; margin-bottom: 16rpx; }
+.required { color: #E53935; }
+.optional { color: #999999; font-size: 24rpx; font-weight: normal; }
 
 .input {
-  width: 100%;
-  height: 80rpx;
-  background: #F8F8F8;
-  border-radius: 8rpx;
-  padding: 0 20rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
+  width: 100%; height: 80rpx; background: #F8F8F8; border-radius: 8rpx;
+  padding: 0 20rpx; font-size: 28rpx; box-sizing: border-box;
 }
+.textarea { height: 160rpx; padding: 16rpx 20rpx; }
+.title-input { height: 120rpx; padding: 16rpx 20rpx; }
+.content-input { height: 300rpx; padding: 16rpx 20rpx; }
+.price-input { width: 160rpx; text-align: right; }
+.count-tip { font-size: 22rpx; color: #999999; text-align: right; margin-top: 8rpx; }
 
-.textarea {
-  height: 160rpx;
-  padding: 16rpx 20rpx;
+.upload-area .upload-btn {
+  width: 200rpx; height: 200rpx; background: #F8F8F8;
+  border: 2rpx dashed #DDDDDD; border-radius: 12rpx;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
+.upload-area .upload-btn .upload-icon { font-size: 56rpx; color: #CCCCCC; }
+.upload-area .upload-btn .upload-text { font-size: 24rpx; color: #999999; margin-top: 8rpx; }
 
-.title-input {
-  height: 120rpx;
-  padding: 16rpx 20rpx;
-}
-
-.content-input {
-  height: 300rpx;
-  padding: 16rpx 20rpx;
-}
-
-.price-input {
-  width: 160rpx;
-  text-align: right;
-}
-
-.count-tip {
-  font-size: 22rpx;
-  color: #999999;
-  text-align: right;
-  margin-top: 8rpx;
-}
-
-.upload-area {
-  .upload-btn {
-    width: 200rpx;
-    height: 200rpx;
-    background: #F8F8F8;
-    border: 2rpx dashed #DDDDDD;
-    border-radius: 12rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .upload-icon {
-      font-size: 56rpx;
-      color: #CCCCCC;
-    }
-
-    .upload-text {
-      font-size: 24rpx;
-      color: #999999;
-      margin-top: 8rpx;
-    }
-  }
-
-  .img-preview {
-    width: 200rpx;
-    height: 200rpx;
-    position: relative;
-
-    .preview-img {
-      width: 100%;
-      height: 100%;
-      border-radius: 12rpx;
-    }
-
-    .img-remove {
-      position: absolute;
-      top: -10rpx;
-      right: -10rpx;
-      width: 40rpx;
-      height: 40rpx;
-      background: rgba(0, 0, 0, 0.5);
-      color: #FFFFFF;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 40rpx;
-      font-size: 28rpx;
-    }
-  }
+.upload-area .img-preview { width: 200rpx; height: 200rpx; position: relative; }
+.upload-area .img-preview .preview-img { width: 100%; height: 100%; border-radius: 12rpx; }
+.upload-area .img-preview .img-remove {
+  position: absolute; top: -10rpx; right: -10rpx; width: 40rpx; height: 40rpx;
+  background: rgba(0, 0, 0, 0.5); color: #FFFFFF; border-radius: 50%;
+  text-align: center; line-height: 40rpx; font-size: 28rpx;
 }
 
 .bottom-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20rpx 40rpx;
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: #FFFFFF;
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 40rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom)); background: #FFFFFF;
   box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.06);
 }
-
 .submit-btn {
-  height: 96rpx;
-  background: #E53935;
-  color: #FFFFFF;
-  border-radius: 12rpx;
-  font-size: 34rpx;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:active {
-    opacity: 0.85;
-  }
+  height: 96rpx; background: #E53935; color: #FFFFFF; border-radius: 12rpx;
+  font-size: 34rpx; font-weight: bold; display: flex; align-items: center; justify-content: center;
 }
-
-.placeholder {
-  color: #CCCCCC;
-  font-size: 28rpx;
-}
+.submit-btn:active { opacity: 0.85; }
+.placeholder { color: #CCCCCC; font-size: 28rpx; }
 </style>

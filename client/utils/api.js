@@ -3,14 +3,9 @@ import request from './request';
 export default {
   // ==================== 商家端 ====================
 
-  // 发送验证码
-  sendCode(phone) {
-    return request.post('/api/merchant/send-code', { phone });
-  },
-
-  // 手机号登录
-  login(phone, code) {
-    return request.post('/api/merchant/login', { phone, code });
+  // 账号密码登录
+  login(username, password) {
+    return request.post('/api/merchant/login', { username, password });
   },
 
   // 获取商家信息
@@ -23,9 +18,14 @@ export default {
     return request.put('/api/merchant/info', data);
   },
 
-  // 获取二维码信息
+  // 获取二维码信息（商家主页）
   getQrcode() {
     return request.get('/api/merchant/qrcode');
+  },
+
+  // 获取单条料单分享信息
+  getPostQrcode(postId) {
+    return request.get(`/api/merchant/posts/${postId}/qrcode`);
   },
 
   // 发布内容

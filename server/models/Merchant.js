@@ -7,6 +7,12 @@ const Merchant = {
     return rows[0] || null;
   },
 
+  // 根据用户名查找（账号密码登录）
+  async findByUsername(username) {
+    const [rows] = await pool.query('SELECT * FROM merchants WHERE username = ?', [username]);
+    return rows[0] || null;
+  },
+
   // 根据ID查找
   async findById(id) {
     const [rows] = await pool.query('SELECT id, phone, name, avatar, intro, qrcode_id, status, created_at FROM merchants WHERE id = ?', [id]);
@@ -48,6 +54,11 @@ const Merchant = {
       [qrcodeId]
     );
     return rows[0] || null;
+  },
+
+  // 更新二维码ID
+  async updateQrcodeId(id, qrcodeId) {
+    await pool.query('UPDATE merchants SET qrcode_id = ? WHERE id = ?', [qrcodeId, id]);
   }
 };
 

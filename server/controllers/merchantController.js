@@ -22,28 +22,28 @@ exports.sendCode = async (req, res) => {
   }
 };
 
-// 手机号验证码登录
+// 账号密码登录
 exports.login = async (req, res) => {
   try {
-    const { phone, code } = req.body;
-    if (!phone || !code) {
-      return res.json({ code: 1, message: '手机号和验证码不能为空' });
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.json({ code: 1, message: '用户名和密码不能为空' });
     }
 
-    // 验证码校验（默认 1234）
-    if (code !== '1234') {
-      return res.json({ code: 1, message: '验证码错误' });
-    }
-
-    // 查找或创建商家
-    let merchant = await Merchant.findByPhone(phone);
+    // 根据用户名查找商家
+    const merchant = await Merchant.findByUsername(username);
     if (!merchant) {
-      merchant = await Merchant.create(phone);
+      return res.json({ code: 1, message: '用户不存在' });
+    }
+
+    // 校验密码
+    if (merchant.password !== password) {
+      return res.json({ code: 1, message: '密码错误' });
     }
 
     // 生成 token
     const token = jwt.sign(
-      { id: merchant.id, phone: merchant.phone },
+      { id: merchant.id, username: merchant.username },
       config.jwtSecret,
       { expiresIn: config.jwtExpiresIn }
     );
@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     console.error('[login]', err);
-    res.status(500).json({ code: 500, message: '登录失败' });
+    res.status(500).json({ code: 500, message: '登录失败: ' + err.message });
   }
 };
 
@@ -99,15 +99,24 @@ exports.updateInfo = async (req, res) => {
   }
 };
 
-// 获取专属二维码ID
+// 获取专属二维码ID（为空则自动生成）
 exports.getQrcode = async (req, res) => {
   try {
-    const merchant = await Merchant.findById(req.merchantId);
+    let merchant = await Merchant.findById(req.merchantId);
     if (!merchant) {
       return res.json({ code: 404, message: '商家不存在' });
     }
+
+    // 如果 qrcode_id 为空，自动生成
+    if (!merchant.qrcode_id) {
+      const { v4: uuidv4 } = require('uuid');
+      const qrcodeId = uuidv4().replace(/-/g, '');
+      await Merchant.updateQrcodeId(req.merchantId, qrcodeId);
+      merchant.qrcode_id = qrcodeId;
+    }
+
     // 小程序页面路径
-    const pagePath = `/pages/client/home?merchantId=${merchant.qrcode_id}`;
+    const pagePath = `pages/client/home?merchantId=${merchant.qrcode_id}`;
 
     res.json({
       code: 0,
@@ -226,5 +235,108 @@ exports.getOrders = async (req, res) => {
   } catch (err) {
     console.error('[getOrders]', err);
     res.status(500).json({ code: 500, message: '获取失败' });
+  }
+};
+
+// 生成商家主页二维码图片
+exports.generateQrcodeImage = async (req, res) => {
+  try {
+    const { qrcode_id, page_path } = req.query;
+    if (!qrcode_id || !page_path) {
+      return res.status(400).json({ code: 1, message: '参数缺失' });
+    }
+
+    const QRCode = require('qrcode');
+
+    const dataUrl = await QRCode.toDataURL(`merchantId=${qrcode_id}`, {
+      width: 400,
+      margin: 2,
+      color: { dark: '#000000', light: '#FFFFFF' }
+    });
+
+    const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
+    const imgBuffer = Buffer.from(base64Data, 'base64');
+
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': imgBuffer.length
+    });
+    res.end(imgBuffer);
+  } catch (err) {
+    console.error('[generateQrcodeImage]', err);
+    res.status(500).json({ code: 500, message: '生成失败' });
+  }
+};
+
+// 获取单条料单的分享信息（二维码ID + 页面路径）
+exports.getPostQrcode = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 验证这条料单属于当前商家
+    const post = await Post.findById(id, req.merchantId);
+    if (!post) {
+      return res.json({ code: 404, message: '内容不存在' });
+    }
+
+    // 获取商家的 qrcode_id（用于客户端识别商家）
+    let merchant = await Merchant.findById(req.merchantId);
+    if (!merchant.qrcode_id) {
+      const { v4: uuidv4 } = require('uuid');
+      const qrcodeId = uuidv4().replace(/-/g, '');
+      await Merchant.updateQrcodeId(req.merchantId, qrcodeId);
+      merchant.qrcode_id = qrcodeId;
+    }
+
+    // 单条料单指向详情页
+    const pagePath = `pages/client/detail?id=${id}&merchantId=${merchant.qrcode_id}`;
+
+    res.json({
+      code: 0,
+      data: {
+        post_id: id,
+        post_title: post.title,
+        qrcode_id: merchant.qrcode_id,
+        page_path: pagePath
+      }
+    });
+  } catch (err) {
+    console.error('[getPostQrcode]', err);
+    res.status(500).json({ code: 500, message: '获取失败: ' + err.message });
+  }
+};
+
+// 生成单条料单的二维码图片
+exports.generatePostQrcodeImage = async (req, res) => {
+  try {
+    const { post_id, post_title, qrcode_id } = req.query;
+    if (!post_id || !qrcode_id) {
+      return res.status(400).json({ code: 1, message: '参数缺失' });
+    }
+
+    const QRCode = require('qrcode');
+    const title = decodeURIComponent(post_title || '爆料内容');
+
+    // 二维码内容包含 postId 和 merchantId，扫码后可跳转详情页
+    const dataUrl = await QRCode.toDataURL(
+      `postId=${post_id}&merchantId=${qrcode_id}`,
+      {
+        width: 400,
+        margin: 2,
+        color: { dark: '#E53935', light: '#FFFFFF' }
+      }
+    );
+
+    const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
+    const imgBuffer = Buffer.from(base64Data, 'base64');
+
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': imgBuffer.length
+    });
+    res.end(imgBuffer);
+  } catch (err) {
+    console.error('[generatePostQrcodeImage]', err);
+    res.status(500).json({ code: 500, message: '生成失败' });
   }
 };

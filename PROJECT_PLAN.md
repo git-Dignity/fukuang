@@ -88,6 +88,8 @@ fukuang/
 |------|------|------|
 | id | INT AUTO_INCREMENT | 主键 |
 | phone | VARCHAR(11) UNIQUE | 手机号 |
+| username | VARCHAR(50) UNIQUE | 用户名（登录用） |
+| password | VARCHAR(100) | 登录密码 |
 | name | VARCHAR(100) | 商家/昵称 |
 | avatar | VARCHAR(500) | 头像URL |
 | intro | VARCHAR(500) | 商家简介 |
@@ -135,8 +137,7 @@ fukuang/
 
 | 接口 | 方法 | 说明 |
 |------|------|------|
-| `/api/merchant/send-code` | POST | 发送手机验证码 |
-| `/api/merchant/login` | POST | 手机号 + 验证码登录 |
+| `/api/merchant/login` | POST | 用户名 + 密码登录 |
 | `/api/merchant/info` | GET | 获取当前商家信息 |
 | `/api/merchant/posts` | POST | 发布爆料内容 |
 | `/api/merchant/posts` | GET | 获取发布列表（支持 type/status 筛选） |
@@ -144,7 +145,8 @@ fukuang/
 | `/api/merchant/posts/:id` | DELETE | 删除爆料内容 |
 | `/api/merchant/posts/:id/status` | PUT | 上下架切换 |
 | `/api/merchant/orders` | GET | 查看订单收款数据 |
-| `/api/merchant/qrcode` | GET | 获取专属小程序码 |
+| `/api/merchant/qrcode` | GET | 获取专属二维码ID（为空自动生成） |
+| `/api/merchant/qrcode-image` | GET | 生成二维码图片（PNG） |
 | `/api/upload` | POST | 图片上传 |
 
 ### 客户端 API（免登录）
@@ -163,11 +165,12 @@ fukuang/
 ### 商家端
 
 **1. login.vue — 登录页**
-- 手机号输入框
-- 验证码输入框 + 发送倒计时按钮
+- 用户名输入框
+- 密码输入框
 - 登录按钮
+- 管理员账户提示
 
-**2. publish.vue — 发布爆料页（对应截图1）**
+**2. publish.vue — 发布爆料页**
 - 顶部 Tab：**爆料** / **包时套餐**
 - 表单字段：
   - 标题（必填，96字内）
@@ -179,12 +182,16 @@ fukuang/
   - 付费正文内容（必填，富文本/多行文本）
 - 底部红色按钮：**提交发布**
 
-**3. manage.vue — 内容管理页（对应截图2）**
-- 顶部搜索栏
+**3. manage.vue — 内容管理页**
+- 顶部搜索栏 + **分享按钮**
 - 分类 Tab：全部 / 包时套餐 / 不中退料 / 预售料
 - 列表展示（卡片形式），每条可操作：编辑、删除、上下架
 - 空状态：信封图标 + "暂无数据"
 - 底部悬浮按钮：**+ 新建爆料**
+- **分享弹窗**：点击分享按钮弹出二维码弹窗
+  - 展示专属小程序码（qrcode 库生成）
+  - 提示文字："微信扫一扫 查看料单"
+  - 保存二维码到相册按钮
 
 **4. edit.vue — 编辑内容页**
 - 与发布页表单相同，回填已有数据
@@ -228,15 +235,22 @@ SELECT * FROM posts WHERE status = 1 AND merchant_id = ? AND DATE(created_at) < 
 
 ### 2. 免登录访客浏览
 - 客户端通过在 URL 中携带 `merchantId` 参数识别商家
-- 小程序码扫码路径：`/pages/client/home?merchantId=xxx`
+- 小程序码扫码路径：`pages/client/home?merchantId=xxx`
 - 不需要微信授权手机号，仅支付环节使用微信支付授权
 
-### 3. 权限隔离
-- 商家 JWT token 包含 merchant_id
+### 3. 二维码分享机制
+- 商家端 manage.vue 点击「分享」按钮弹出二维码
+- 后端通过 `qrcode` 库生成二维码图片（开发阶段）
+- 生产环境接入微信小程序码 API（`wxacode.getUnlimited`）
+- 二维码指向路径：`pages/client/home?merchantId={qrcode_id}`
+- 客户扫码进入商家主页，自动区分今日/往期内容
+
+### 4. 权限隔离
+- 商家 JWT token 包含 merchant_id 和 username
 - 所有商家接口通过 auth 中间件验证 token
 - 数据查询强制带 `WHERE merchant_id = ?` 条件
 
-### 4. 微信支付流程
+### 5. 微信支付流程
 1. 前端 `wx.login()` 获取 code
 2. 后端通过 `code` 换 `openid`
 3. 后端调用微信统一下单 API，返回支付参数
@@ -244,9 +258,9 @@ SELECT * FROM posts WHERE status = 1 AND merchant_id = ? AND DATE(created_at) < 
 5. 微信异步回调通知后端，更新订单状态
 6. 前端轮询或 WebSocket 获取支付结果
 
-### 5. 二维码生成
-- 商家后台生成固定小程序码，指向 `/pages/client/home?merchantId=xxx`
-- 使用微信小程序码 API 生成
+### 6. 二维码生成
+- 商家后台生成固定小程序码，指向 `pages/client/home?merchantId=xxx`
+- 使用微信小程序码 API 生成（生产环境）或 qrcode 库生成（开发阶段）
 
 ---
 

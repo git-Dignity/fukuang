@@ -44,7 +44,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onShow } from 'vue';
+import { ref, computed } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import api from '../../utils/api';
 
 const orders = ref([]);
@@ -68,116 +69,33 @@ const totalIncome = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.orders-page {
-  min-height: 100vh;
-  background: #F5F5F5;
-}
+<style scoped>
+.orders-page { min-height: 100vh; background: #F5F5F5; }
 
 .summary-card {
   background: linear-gradient(135deg, #E53935, #C62828);
-  margin: 24rpx;
-  border-radius: 16rpx;
-  padding: 40rpx;
-  display: flex;
-  justify-content: space-around;
-
-  .summary-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .summary-label {
-    font-size: 24rpx;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 12rpx;
-  }
-
-  .summary-value {
-    font-size: 44rpx;
-    font-weight: bold;
-    color: #FFFFFF;
-  }
+  margin: 24rpx; border-radius: 16rpx; padding: 40rpx; display: flex; justify-content: space-around;
 }
+.summary-card .summary-item { display: flex; flex-direction: column; align-items: center; }
+.summary-card .summary-label { font-size: 24rpx; color: rgba(255, 255, 255, 0.8); margin-bottom: 12rpx; }
+.summary-card .summary-value { font-size: 44rpx; font-weight: bold; color: #FFFFFF; }
 
-.list-wrap {
-  padding: 0 24rpx;
-}
+.list-wrap { padding: 0 24rpx; }
 
-.order-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
+.order-card { background: #FFFFFF; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.order-card .order-header { display: flex; justify-content: space-between; align-items: center; }
+.order-card .order-header .order-title { flex: 1; font-size: 30rpx; color: #333; font-weight: 500; }
+.order-card .order-header .order-amount { font-size: 36rpx; color: #E53935; font-weight: bold; }
 
-  .order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.order-card .order-info { display: flex; justify-content: space-between; align-items: center; margin-top: 16rpx; }
+.order-card .order-info .order-time { font-size: 24rpx; color: #999; }
+.order-card .order-info .order-status { font-size: 22rpx; padding: 4rpx 16rpx; border-radius: 20rpx; }
+.order-card .order-info .order-status.paid { background: #E8F5E9; color: #4CAF50; }
+.order-card .order-info .order-status.unpaid { background: #FFF3E0; color: #FF9800; }
 
-    .order-title {
-      flex: 1;
-      font-size: 30rpx;
-      color: #333;
-      font-weight: 500;
-    }
+.order-card .order-trade { margin-top: 12rpx; font-size: 22rpx; color: #BBB; }
 
-    .order-amount {
-      font-size: 36rpx;
-      color: #E53935;
-      font-weight: bold;
-    }
-  }
-
-  .order-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16rpx;
-
-    .order-time {
-      font-size: 24rpx;
-      color: #999;
-    }
-
-    .order-status {
-      font-size: 22rpx;
-      padding: 4rpx 16rpx;
-      border-radius: 20rpx;
-
-      &.paid {
-        background: #E8F5E9;
-        color: #4CAF50;
-      }
-      &.unpaid {
-        background: #FFF3E0;
-        color: #FF9800;
-      }
-    }
-  }
-
-  .order-trade {
-    margin-top: 12rpx;
-    font-size: 22rpx;
-    color: #BBB;
-  }
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 200rpx;
-
-  .empty-icon {
-    font-size: 80rpx;
-    margin-bottom: 24rpx;
-  }
-
-  .empty-text {
-    font-size: 28rpx;
-    color: #999;
-  }
-}
+.empty-state { display: flex; flex-direction: column; align-items: center; padding-top: 200rpx; }
+.empty-state .empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-state .empty-text { font-size: 28rpx; color: #999; }
 </style>

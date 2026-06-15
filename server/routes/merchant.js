@@ -11,6 +11,9 @@ router.post('/login', ctrl.login);
 router.get('/info', authMerchant, ctrl.getInfo);
 router.put('/info', authMerchant, ctrl.updateInfo);
 router.get('/qrcode', authMerchant, ctrl.getQrcode);
+router.get('/qrcode-image', ctrl.generateQrcodeImage);
+router.get('/posts/:id/qrcode', authMerchant, ctrl.getPostQrcode);
+router.get('/post-qrcode-image', ctrl.generatePostQrcodeImage);
 
 // 内容管理
 router.post('/posts', authMerchant, ctrl.createPost);

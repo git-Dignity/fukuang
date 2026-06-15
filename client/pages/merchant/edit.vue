@@ -92,7 +92,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, onLoad } from 'vue';
+import { ref, reactive } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import api from '../../utils/api';
 
 const postId = ref(null);
@@ -184,121 +185,45 @@ function handleSave() {
 }
 </script>
 
-<style lang="scss" scoped>
-.edit-page {
-  min-height: 100vh;
-  background: #F5F5F5;
-  padding-bottom: 140rpx;
-}
+<style scoped>
+.edit-page { min-height: 100vh; background: #F5F5F5; padding-bottom: 140rpx; }
+.form-wrap { padding: 24rpx; }
 
-.form-wrap {
-  padding: 24rpx;
-}
-
-.form-section {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-
-  &.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.section-label {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 16rpx;
-}
-
+.form-section { background: #FFFFFF; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.form-section.row { display: flex; align-items: center; justify-content: space-between; }
+.section-label { font-size: 28rpx; color: #333; font-weight: 500; margin-bottom: 16rpx; }
 .required { color: #E53935; }
 
-.input {
-  width: 100%;
-  height: 80rpx;
-  background: #F8F8F8;
-  border-radius: 8rpx;
-  padding: 0 20rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
+.input { width: 100%; height: 80rpx; background: #F8F8F8; border-radius: 8rpx; padding: 0 20rpx; font-size: 28rpx; box-sizing: border-box; }
 .title-input { height: 120rpx; padding: 16rpx 20rpx; }
 .textarea { height: 160rpx; padding: 16rpx 20rpx; }
 .content-input { height: 300rpx; padding: 16rpx 20rpx; }
 .price-input { width: 160rpx; text-align: right; }
 
-.upload-area {
-  .upload-btn {
-    width: 160rpx;
-    height: 160rpx;
-    background: #F8F8F8;
-    border: 2rpx dashed #DDD;
-    border-radius: 12rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.upload-area .upload-btn {
+  width: 160rpx; height: 160rpx; background: #F8F8F8;
+  border: 2rpx dashed #DDD; border-radius: 12rpx;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-area .upload-btn .upload-icon { font-size: 56rpx; color: #CCC; }
 
-    .upload-icon {
-      font-size: 56rpx;
-      color: #CCC;
-    }
-  }
-
-  .img-preview {
-    width: 160rpx;
-    height: 160rpx;
-    position: relative;
-
-    .preview-img {
-      width: 100%;
-      height: 100%;
-      border-radius: 12rpx;
-    }
-
-    .img-remove {
-      position: absolute;
-      top: -10rpx;
-      right: -10rpx;
-      width: 40rpx;
-      height: 40rpx;
-      background: rgba(0,0,0,0.5);
-      color: #FFF;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 40rpx;
-      font-size: 28rpx;
-    }
-  }
+.upload-area .img-preview { width: 160rpx; height: 160rpx; position: relative; }
+.upload-area .img-preview .preview-img { width: 100%; height: 100%; border-radius: 12rpx; }
+.upload-area .img-preview .img-remove {
+  position: absolute; top: -10rpx; right: -10rpx; width: 40rpx; height: 40rpx;
+  background: rgba(0,0,0,0.5); color: #FFF; border-radius: 50%;
+  text-align: center; line-height: 40rpx; font-size: 28rpx;
 }
 
 .bottom-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20rpx 40rpx;
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 40rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: #FFF;
-  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06);
+  background: #FFF; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06);
 }
-
 .submit-btn {
-  height: 96rpx;
-  background: #E53935;
-  color: #FFF;
-  border-radius: 12rpx;
-  font-size: 34rpx;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:active { opacity: 0.85; }
+  height: 96rpx; background: #E53935; color: #FFF; border-radius: 12rpx;
+  font-size: 34rpx; font-weight: bold; display: flex; align-items: center; justify-content: center;
 }
-
+.submit-btn:active { opacity: 0.85; }
 .placeholder { color: #CCC; font-size: 28rpx; }
 </style>
